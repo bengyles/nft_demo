@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-//ToDo: add safemath
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -47,7 +46,7 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
         require(totalSupply() < MAX_SUPPLY, "All passes have been created already");
 
         // send ETH to the owner
-        (bool sent, bytes memory data) = payable(owner()).call{value: msg.value}("");
+        (bool sent,) = payable(owner()).call{value: msg.value}("");
         require(sent, "Failed to send Ether");
         safeMint(receiver);
     }
@@ -67,17 +66,14 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
 
         address previousOwner = ownerOf(tokenId);
 
-        //ToDo: send fee to the owner of this contract
         uint fee = msg.value * FEE_PERCENTAGE / 100;
         // send fee to the contract owner
-        //ToDo: check whether this can be done without an unused variable
-        (bool tx1Sent, bytes memory data1) = payable(previousOwner).call{value: fee}("");
-        require(tx1Sent, "Failed to send Ether");
+        (bool feeSent,) = payable(owner()).call{value: fee}("");
+        require(feeSent, "Failed to send fee to the band");
 
         // send ETH to the token owner
-        //ToDo: check whether this can be done without an unused variable
-        (bool tx2Sent, bytes memory data2) = payable(previousOwner).call{value: msg.value - fee}("");
-        require(tx2Sent, "Failed to send Ether");
+        (bool paymentSent,) = payable(previousOwner).call{value: msg.value - fee}("");
+        require(paymentSent, "Failed to send payment to the new owner");
 
         // update token price
         properties[tokenId].lastPrice = properties[tokenId].askPrice;
