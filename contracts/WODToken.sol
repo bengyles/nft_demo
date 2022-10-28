@@ -11,9 +11,9 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
-    uint MAX_SUPPLY = 1000;
-    uint INITIAL_PRICE = 1000000000000000;
-    uint FEE_PERCENTAGE = 5;
+    uint public MAX_SUPPLY = 1000;
+    uint public INITIAL_PRICE = 1000000000000000;
+    uint public FEE_PERCENTAGE = 5;
 
     struct Meta{
         bool forSale;
@@ -56,7 +56,7 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
     }
 
     function setPrice(uint tokenId, uint newPrice) public onlyTokenOwner(tokenId){
-        require(newPrice <= properties[tokenId].lastPrice * 110 / 100, "the price is too high! We only allow a 10% increase on the last buy price");
+        require(newPrice <= properties[tokenId].lastPrice * 110 / 100, "The price is too high! We only allow a 10% increase on the last buy price");
         properties[tokenId].askPrice = newPrice;
     }
 
@@ -71,12 +71,13 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
         (bool feeSent,) = payable(owner()).call{value: fee}("");
         require(feeSent, "Failed to send fee to the band");
 
-        // send ETH to the token owner
+        // send remaining balance to the token owner
         (bool paymentSent,) = payable(previousOwner).call{value: msg.value - fee}("");
-        require(paymentSent, "Failed to send payment to the new owner");
+        require(paymentSent, "Failed to send payment to the previous owner");
 
-        // update token price
+        // update token price and disable forSale
         properties[tokenId].lastPrice = properties[tokenId].askPrice;
+        properties[tokenId].forSale = false;
 
         _transfer(previousOwner, msg.sender, tokenId);
     }
