@@ -11,9 +11,9 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
-    uint public MAX_SUPPLY = 1000;
-    uint public INITIAL_PRICE = 1000000000000000;
-    uint public FEE_PERCENTAGE = 5;
+    uint public MAX_SUPPLY;
+    uint public INITIAL_PRICE;
+    uint public FEE_PERCENTAGE;
 
     struct Meta{
         bool forSale;
@@ -23,7 +23,11 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
 
     mapping(uint=>Meta) public properties;
 
-    constructor() ERC721("Waves Of Decay Insiders Club", "WOD") {}
+    constructor(uint max_supply, uint initial_price, uint fee_percentage) ERC721("Waves Of Decay Insiders Club", "WOD") {
+        MAX_SUPPLY= max_supply;
+        INITIAL_PRICE = initial_price;
+        FEE_PERCENTAGE = fee_percentage;
+    }
 
     function safeMint(address to) private {
         uint256 tokenId = _tokenIdCounter.current();
@@ -42,7 +46,7 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
 
     // buy the NFT from the owner
     function _buy(address receiver) private{
-        require(msg.value >= INITIAL_PRICE, "price too low");
+        require(msg.value >= INITIAL_PRICE, "Price too low");
         require(totalSupply() < MAX_SUPPLY, "All passes have been created already");
 
         // send ETH to the owner
@@ -61,8 +65,8 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
     }
 
     function trade(uint tokenId) public payable{
-        require(msg.value >= properties[tokenId].askPrice, "price too low");
-        require(properties[tokenId].forSale, "pass is not for sale");
+        require(msg.value >= properties[tokenId].askPrice, "Price too low");
+        require(properties[tokenId].forSale, "Pass is not for sale");
 
         address previousOwner = ownerOf(tokenId);
 
@@ -85,7 +89,7 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
     // modifiers
 
     modifier onlyTokenOwner(uint tokenId){
-        require(ownerOf(tokenId) == msg.sender, "sender is not the owner");
+        require(ownerOf(tokenId) == msg.sender, "Sender is not the owner");
         _;
     }
 
