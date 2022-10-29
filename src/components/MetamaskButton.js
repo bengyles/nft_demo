@@ -1,20 +1,15 @@
 import { useMetaMask } from "metamask-react";
 
 function MetamaskButton(){
-  const { status, connect, account, chainId, ethereum, switchChain } = useMetaMask();
+  const { status, connect, account, chainId } = useMetaMask();
 
-  if (status === "initializing") return <div>Synchronisation with MetaMask ongoing...</div>
-
-  if (status === "unavailable") return <div>MetaMask not available :(</div>
+  if (status === "unavailable") return <div><a target="_blank" href="https://metamask.io/">Install Metamask</a></div>
 
   if (status === "notConnected") return <button onClick={connect}>Connect to MetaMask</button>
 
-  if (status === "connecting") return <div>Connecting...</div>
+  if (status === "connecting" || status === "initializing") return <div>Loading...</div>
 
   if (status === "connected"){
-    if(chainId != "0x5"){
-      switchChain("0x5");
-    }
     return <div>Connected account {account} on chain ID {chainId}</div>
   }
 
