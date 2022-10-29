@@ -6,6 +6,7 @@ async function main() {
   const wodToken = await WODToken.deploy(1000, ethers.utils.parseEther('0.001'), 5);
 
   await wodToken.deployed();
+  console.log(`contract deployed at ${wodToken.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
