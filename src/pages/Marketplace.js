@@ -10,10 +10,11 @@ function Marketplace() {
   let [itemsLoading, setItemsLoading] = useState(false);
   let [items, setItems] = useState([]);
   const columns = [
-    {property: 'tokenId', primary: true, header: <Text>Token ID</Text>},
-    {property: 'owner', header: <Text>Owner</Text>},
-    {property: 'askPrice', header: <Text>Price</Text>},
-    {property: 'forSale', header: <Text></Text>, render: (item) => <Button disabled={item.forSale == false} label="buy" onClick={()=> tradeNFT(item)}/>},
+    {property: 'tokenId', primary: true, header: <Text>Token ID</Text>, size: 'small'},
+    {property: 'owner', header: <Text>Owner</Text>, size: 'large'},
+    {property: 'askPrice', header: <Text>Price</Text>, size: 'small'},
+    {property: 'forSale', header: <Text></Text>, size: 'small', render: (item) => <Button disabled={item.forSale == false} label="buy" onClick={()=> tradeNFT(item)}/>},
+    {property: '', header: <Text></Text>, render: (item)=> <Text></Text>}
   ];
 
   useEffect(() => {
@@ -65,9 +66,9 @@ function Marketplace() {
 
   return (
       <div>
-        <p>Buy a pass from someone else</p>
-        {items.length > 0?<Box align="center" pad="large">
-          {itemsLoading?<Spinner />: <DataTable columns={columns} data={items}/>}
+        <Text>You can purchase passes from our community, when you do a small fee will go to the band for extra support.</Text>
+        {items.length > 0?<Box pad={{top: "medium"}}>
+          {itemsLoading?<Spinner />: <DataTable size="small" columns={columns} data={items}/>}
         </Box>:<Text>No tokens minted yet</Text>}
       </div>
   );

@@ -27,7 +27,7 @@ function Home() {
   return (
       <div>
         <p>Buy our backstage pass</p>
-        <Button disabled={loading} primary label="Buy!" onClick={buyNFT}/>
+        <Button disabled={loading} label="Buy!" onClick={buyNFT}/>
       </div>
   );
 }

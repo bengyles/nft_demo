@@ -1,6 +1,6 @@
 import './App.css';
 import {Grommet, Box} from 'grommet';
-import theme from './util/theme.json';
+import {theme} from './util/theme.js';
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import MyItems from './pages/my-items'

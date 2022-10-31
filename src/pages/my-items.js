@@ -13,9 +13,10 @@ function MyItems() {
   let [askPrice, setAskPrice] = useState("0");
   let [currentToken, setCurrentToken] = useState(0);
   const columns = [
-    {property: 'tokenId', primary: true, header: <Text>Token ID</Text>},
-    {property: 'askPrice', header: <Text>Price</Text>},
-    {property: 'forSale', header: <Text></Text>, render: (item) => item.forSale?<Button label="Cancel sale" onClick={()=> cancelSell(item)} />:<Button label="Sell" onClick={()=>openModal(item)} /> }
+    {property: 'tokenId', primary: true, header: <Text>Token ID</Text>, size: 'small'},
+    {property: 'askPrice', header: <Text>Price</Text>, size: 'small'},
+    {property: 'forSale', header: <Text></Text>, size: 'small', render: (item) => item.forSale?<Button label="Cancel sale" onClick={()=> cancelSell(item)} />:<Button label="Sell" onClick={()=>openModal(item)} /> },
+    {property: '', header: <Text></Text>, render: (item)=> <Text></Text>}
   ];
 
   useEffect(() => {
@@ -91,9 +92,9 @@ function MyItems() {
   return (
       <div>
         {status === "connected" ? <div>
-          <p>My items</p>
-          {items.length > 0?<Box align="center" pad="large">
-            {itemsLoading?<Spinner />: <DataTable columns={columns} data={items}/>}
+          <Text>These passes are yours, you can sell them or remove from sale. When you put them up for sale you can also set the price, though it has to be less than 110% of your buy price.</Text>
+          {items.length > 0?<Box pad={{top: "medium"}}>
+            {itemsLoading?<Spinner />: <DataTable size="small" columns={columns} data={items}/>}
           </Box>:<Text>You don't have any passes yet</Text>}
         </div> : <Text>Connect Metamask to see your NFTs</Text>}
         {sellModalOpen && (

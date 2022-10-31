@@ -5,8 +5,8 @@ import {useMetaMask} from 'metamask-react';
 function Header() {
   const {status} = useMetaMask();
   return (
-      <HeaderBlock background="light-3" pad="small">
-        <Nav direction="row" gap="medium" pad={{horizontal: 'large'}}>
+      <HeaderBlock pad="small">
+        <Nav direction="row" gap="medium">
           <Anchor label="Home" href="/"/>
           <Anchor label="Marketplace" href="/marketplace"/>
           {status === "connected"?<Anchor label="My items" href="/my-items"/>: null}
