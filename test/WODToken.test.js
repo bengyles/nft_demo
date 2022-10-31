@@ -71,23 +71,24 @@ describe('WODToken', function() {
     it('should revert when someone other than the owner tries to change the price', async function() {
       const tokenData = await wodToken.properties(0);
       let newPrice = tokenData.lastPrice.mul(105).div(100);
-      expect(wodToken.connect(fan2).setPrice(0, newPrice)).to.be.revertedWith('Sender is not the owner');
+      expect(wodToken.connect(fan2).sell(0, newPrice)).to.be.revertedWith('Sender is not the owner');
     });
 
     it('should revert when increasing the price more than 110%', async function() {
       const tokenData = await wodToken.properties(0);
       let newPrice = tokenData.lastPrice.mul(120).div(100);
-      expect(wodToken.connect(fan1).setPrice(0, newPrice)).to.be.revertedWith('The price is too high! We only allow a 10% increase on the last buy price');
+      expect(wodToken.connect(fan1).sell(0, newPrice)).to.be.revertedWith('The price is too high! We only allow a 10% increase on the last buy price');
     });
 
-    it('should set the new token price', async function() {
+    it('should set the new token price and put the token up for sale', async function() {
       let tokenData = await wodToken.properties(0);
       let newPrice = tokenData.lastPrice.mul(105).div(100);
-      const tx = await wodToken.connect(fan1).setPrice(0, newPrice);
+      const tx = await wodToken.connect(fan1).sell(0, newPrice);
 
       await tx.wait();
       tokenData = await wodToken.properties(0);
       expect(tokenData.askPrice).to.equal(newPrice);
+      expect(tokenData.forSale).to.equal(true);
     });
 
     it('should revert when someone other than the owner tries to put the token up for sale', async function() {
@@ -96,7 +97,18 @@ describe('WODToken', function() {
       expect(wodToken.connect(fan2).setForSale(0, true)).to.be.revertedWith('Sender is not the owner');
     });
 
-    it('should put the token up for sale', async function() {
+    it('should remove the forSale property', async function() {
+      const tokenDataBefore = await wodToken.properties(0);
+      expect(tokenDataBefore.forSale).to.equal(true);
+
+      const tx = await wodToken.connect(fan1).setForSale(0, false);
+
+      await tx.wait();
+      const tokenDataAfter = await wodToken.properties(0);
+      expect(tokenDataAfter.forSale).to.equal(false);
+    });
+
+    it('should put the token up for sale again', async function() {
       const tokenDataBefore = await wodToken.properties(0);
       expect(tokenDataBefore.forSale).to.equal(false);
 

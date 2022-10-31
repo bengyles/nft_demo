@@ -1,7 +1,9 @@
 import './App.css';
 import {Grommet, Box} from 'grommet';
-import theme from './util/theme';
+import theme from './util/theme.json';
 import Home from './pages/Home';
+import Marketplace from './pages/Marketplace';
+import MyItems from './pages/my-items'
 import Header from './components/Header'
 import {
   BrowserRouter as Router,
@@ -20,10 +22,10 @@ function App() {
           >
             <Switch>
               <Route path="/marketplace">
-                <p>marketplace</p>
+                <Marketplace />
               </Route>
               <Route path="/my-items">
-                <p>my items</p>
+                <MyItems />
               </Route>
               <Route path="/">
                 <Home/>

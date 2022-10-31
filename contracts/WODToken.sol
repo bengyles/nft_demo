@@ -59,9 +59,10 @@ contract WODToken is ERC721, ERC721Enumerable, Ownable {
         properties[tokenId].forSale = forSale;
     }
 
-    function setPrice(uint tokenId, uint newPrice) public onlyTokenOwner(tokenId){
+    function sell(uint tokenId, uint newPrice) public onlyTokenOwner(tokenId){
         require(newPrice <= properties[tokenId].lastPrice * 110 / 100, "The price is too high! We only allow a 10% increase on the last buy price");
         properties[tokenId].askPrice = newPrice;
+        properties[tokenId].forSale = true;
     }
 
     function trade(uint tokenId) public payable{
