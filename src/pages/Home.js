@@ -21,6 +21,8 @@ function Home() {
         console.log(e);
       }
       setLoading(false);
+    }else{
+      alert("please switch to Goerli test network and refresh the page");
     }
   }
 

@@ -27,19 +27,22 @@ function Marketplace() {
     setItemsLoading(true);
     let tokens = [];
     try {
-      //ToDo: load items even when metamask is not connected, use configured web3 endpoint instead
-      const provider = new ethers.providers.Web3Provider(ethereum, 'any');
-      const wodTokenContract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS, wod.abi, provider);
-      const supply = await wodTokenContract.totalSupply();
+      if (status === 'connected' && chainId === process.env.REACT_APP_CHAIN_ID) {
+        const provider = new ethers.providers.Web3Provider(ethereum, 'any');
+        const wodTokenContract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS, wod.abi, provider);
+        const supply = await wodTokenContract.totalSupply();
 
-      for (let i = 0; i < supply; i++) {
-        const {askPrice, forSale, lastPrice} = await wodTokenContract.properties(i);
-        const owner = await wodTokenContract.ownerOf(i);
-        tokens.push({tokenId: i, askPrice: ethers.utils.formatEther(askPrice), forSale, lastPrice, owner});
+        for (let i = 0; i < supply; i++) {
+          const {askPrice, forSale, lastPrice} = await wodTokenContract.properties(i);
+          const owner = await wodTokenContract.ownerOf(i);
+          tokens.push({tokenId: i, askPrice: ethers.utils.formatEther(askPrice), forSale, lastPrice, owner});
+        }
+
+        setItems(tokens);
+        console.log(tokens);
+      }else{
+        alert("please switch to Goerli test network and refresh the page");
       }
-
-      setItems(tokens);
-      console.log(tokens);
 
     } catch (e) {
       console.log(e);
@@ -61,6 +64,8 @@ function Marketplace() {
         console.log(e);
       }
       setTxLoading(false);
+    }else{
+      alert("please switch to Goerli test network and refresh the page");
     }
   };
 
@@ -69,7 +74,7 @@ function Marketplace() {
         <Text>You can purchase passes from our community, when you do a small fee will go to the band for extra support.</Text>
         {items.length > 0?<Box pad={{top: "medium"}}>
           {itemsLoading?<Spinner />: <DataTable size="small" columns={columns} data={items}/>}
-        </Box>:<Text>No tokens minted yet</Text>}
+        </Box>:<p>No results</p>}
       </div>
   );
 }
