@@ -9,6 +9,7 @@ function Header() {
         <Nav direction="row" gap="medium" alignSelf="stretch" flex={true}>
           <Anchor label="Home" href="/"/>
           <Anchor label="Marketplace" href="/marketplace"/>
+          <Anchor label="Vault" href="/vault"/>
           {status === "connected"?<Anchor label="My items" href="/my-items"/>: null}
         </Nav>
         <Box align="end">

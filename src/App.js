@@ -3,8 +3,9 @@ import {Grommet, Box} from 'grommet';
 import {theme} from './util/theme.js';
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
-import MyItems from './pages/MyItems'
-import Header from './components/Header'
+import MyItems from './pages/MyItems';
+import Vault from './pages/Vault';
+import Header from './components/Header';
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,17 +16,20 @@ function App() {
   return (
       <Grommet className="App" theme={theme}>
         <Router>
-          <Header />
+          <Header/>
           <Box
               direction="row"
               pad="medium"
           >
             <Switch>
               <Route path="/marketplace">
-                <Marketplace />
+                <Marketplace/>
               </Route>
               <Route path="/my-items">
-                <MyItems />
+                <MyItems/>
+              </Route>
+              <Route path="/vault">
+                <Vault/>
               </Route>
               <Route path="/">
                 <Home/>
