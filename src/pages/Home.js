@@ -15,6 +15,8 @@ function Home() {
         const signer = provider.getSigner();
         const wodTokenContract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS, wod.abi, signer);
         const initialTokenPrice = await wodTokenContract.INITIAL_PRICE();
+
+        // call buy method this way because there are multiple functions with the same name
         let tx = await wodTokenContract['buy()']({value: initialTokenPrice});
         console.log(tx);
       }catch(e){
@@ -28,8 +30,9 @@ function Home() {
 
   return (
       <div>
-        <p>Buy our backstage pass</p>
+        <p>Get access to behind-the-scenes content by becoming a virtual band member and get to see some exclusive footage from rehearsals, backstage access, pre-release listening sessions and son on! </p>
         <Button disabled={loading} label="Buy!" onClick={buyNFT}/>
+
       </div>
   );
 }

@@ -12,6 +12,8 @@ function MyItems() {
   let [sellModalOpen, setSellModalOpen] = useState(false);
   let [askPrice, setAskPrice] = useState('0');
   let [currentToken, setCurrentToken] = useState(0);
+
+  // set the columns for the grid
   const columns = [
     {property: 'tokenId', primary: true, header: <Text>Token ID</Text>, size: 'small'},
     {property: 'askPrice', header: <Text>Price</Text>, size: 'small'},
@@ -20,6 +22,7 @@ function MyItems() {
   ];
 
   useEffect(() => {
+    // load the NFTs once connected because metamask is not initialized yet on initial page load
     if (status === 'connected') {
       loadTokens();
     }
@@ -32,8 +35,11 @@ function MyItems() {
       try {
         const provider = new ethers.providers.Web3Provider(ethereum, 'any');
         const wodTokenContract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS, wod.abi, provider);
+
+        // get the amount of tokens belonging to the current user
         const supply = await wodTokenContract.balanceOf(account);
 
+        // loop through the tokens and get their information
         for (let i = 0; i < supply; i++) {
           const tokenId = await wodTokenContract.tokenOfOwnerByIndex(account, i);
           const {askPrice, forSale, lastPrice} = await wodTokenContract.properties(tokenId);
@@ -79,6 +85,7 @@ function MyItems() {
     }
   };
 
+  // set forSale property to false on the token
   const cancelSell = async (token) => {
     if (status === 'connected' && chainId === process.env.REACT_APP_CHAIN_ID) {
       try {
@@ -103,7 +110,7 @@ function MyItems() {
           <Text>These passes are yours, you can sell them or remove from sale. When you put them up for sale you can also set the price, though it has to be less than 110% of your buy price.</Text>
           {items.length > 0 ? <Box pad={{top: 'medium'}}>
             {itemsLoading ? <Spinner/> : <DataTable size="small" columns={columns} data={items}/>}
-          </Box> : <Text>You don't have any passes yet</Text>}
+          </Box> : <p>You don't have any passes yet</p>}
         </div> : <Text>Connect Metamask to see your NFTs</Text>}
         {sellModalOpen && (
             <Layer onEsc={() => setSellModalOpen(false)} onClickOutside={() => setSellModalOpen(false)}>
