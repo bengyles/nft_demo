@@ -1,6 +1,14 @@
-# Getting Started with Create React App
+# Waves Of Decay Insiders Club
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+live demo running [here](https://nft-demo-nebit.vercel.app/)
+
+This app serves as an example implementation of an ERC721 token that is used as an insiders club pass for my band Waves Of Decay. The idea is that the holders of this NFT would have the privilege to see behind-the-scenes photos and videos, get early access to demos etc... at some point in the future. Passes can be minted for 0.001 ETH or can be traded among the community. For every trade a fee will be taken and sent to the band's wallet for extra support.
+
+## Running the project
+
+To get started create an empty `.env` file and copy in the values from `env.example`. You only need to set a private key in case you want to deploy the contract on goerli.
+
+run `yarn install`
 
 ## Available Scripts
 
@@ -14,10 +22,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+### `npx hardhat test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the automatic tests for the contracts, for now we only test the WODToken contract
 
 ### `npm run build`
 
@@ -29,42 +36,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### `npx hardhat run scripts/deploy.js --network goerli`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Deploys the WODToken contract to goerli, it will log an Ethereum address which is where your newly deployed address can be found on the blockchain. Copy this address into `.env` after `REACT_APP_CONTRACT_ADDRESS=`. In order to deploy the contract on a local blockchain first run `npx hardhat node` in one terminal tab and then run `npx hardhat run scripts/deploy.js --network local` in another one and copy the contract address into your `.env` file.
