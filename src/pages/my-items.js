@@ -114,12 +114,15 @@ function MyItems() {
         </div> : <Text>Connect Metamask to see your NFTs</Text>}
         {sellModalOpen && (
             <Layer onEsc={() => setSellModalOpen(false)} onClickOutside={() => setSellModalOpen(false)}>
-              <TextInput
-                  value={askPrice}
-                  onChange={event => setAskPrice(event.target.value)}
-              />
-              <Button label="Submit" onClick={() => sellNFT(currentToken)}/>
-              <Button label="Cancel" onClick={() => setSellModalOpen(false)}/>
+              <Box pad="medium">
+                <TextInput
+                    value={askPrice}
+                    onChange={event => setAskPrice(event.target.value)}
+                    style={{marginBottom: "10px"}}
+                />
+                <Button label="Submit" onClick={() => sellNFT(currentToken)}/>
+                <Button label="Cancel" onClick={() => setSellModalOpen(false)}/>
+              </Box>
             </Layer>
         )}
       </div>
