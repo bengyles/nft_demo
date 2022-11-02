@@ -3,7 +3,7 @@ import {Grommet, Box} from 'grommet';
 import {theme} from './util/theme.js';
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
-import MyItems from './pages/my-items'
+import MyItems from './pages/MyItems'
 import Header from './components/Header'
 import {
   BrowserRouter as Router,
