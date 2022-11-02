@@ -5,7 +5,7 @@ require("@nomicfoundation/hardhat-chai-matchers");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  defaultNetwork: "goerli",
+  defaultNetwork: "hardhat",
   networks: {
     hardhat: {
     },
